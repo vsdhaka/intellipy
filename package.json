@@ -27,7 +27,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/vsdhaka/intellipy"
+    "url": "git+https://github.com/vsdhaka/intellipy.git"
   },
   "bugs": {
     "url": "https://github.com/vsdhaka/intellipy/issues"
@@ -209,8 +209,8 @@
       }
     }
   },
-  "author": "",
-  "license": "ISC",
+  "author": "IntelliPy Team",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^24.0.13",
