@@ -34,12 +34,13 @@ IntelliPy is an advanced AI-powered coding assistant for Python development in V
 ## ✨ Features
 
 ### Core Features
-- **🤖 Multi-LLM Support**: Choose your AI provider - AWS Bedrock, Google Gemini, or local models
+- **🤖 Multi-LLM Support**: Choose your AI provider - AWS Bedrock, Google Gemini, Microsoft 365 Copilot, or local models
 - **🎯 Smart Context**: Automatically analyzes and includes relevant Python files
 - **💬 Advanced Chat Modes**: Ask questions, edit code, or run autonomous agents
 - **⌨️ Inline Chat**: Quick edits with Ctrl+I (Cmd+I on Mac)
 - **📝 @ Mentions**: Reference specific files or entire workspace with @file or @workspace
 - **🛡️ Safety First**: Confirmation prompts for all file modifications
+- **🏢 Microsoft 365 Integration**: Seamlessly use your enterprise Copilot subscription
 
 ### Privacy & Security
 - **🔒 100% Private**: Your code never leaves your configured LLM
@@ -57,7 +58,7 @@ IntelliPy is an advanced AI-powered coding assistant for Python development in V
 
 ### From VSIX
 ```bash
-code --install-extension intellipy-0.2.0.vsix
+code --install-extension intellipy-0.2.1.vsix
 ```
 
 ## 🔧 Quick Setup
@@ -82,7 +83,16 @@ code --install-extension intellipy-0.2.0.vsix
 ```
 **Get API Key**: https://makersuite.google.com/app/apikey
 
-### Option 3: Local Models (Maximum Privacy)
+### Option 3: Microsoft 365 Copilot (Enterprise)
+```json
+{
+  "intellipy.llmProvider": "microsoft365",
+  "intellipy.microsoft365.useBuiltInChat": true
+}
+```
+**Authentication**: Uses your Microsoft work/school account automatically
+
+### Option 4: Local Models (Maximum Privacy)
 ```json
 {
   "intellipy.llmProvider": "custom",

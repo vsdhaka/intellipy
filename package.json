@@ -2,7 +2,7 @@
   "name": "intellipy",
   "displayName": "IntelliPy - Privacy-First Python AI",
   "description": "Privacy-focused AI assistant for Python. No telemetry, no tracking. Choose AWS Bedrock, Google Gemini, or run offline with local models. Your code stays private.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "intellipy-dev",
   "icon": "icon.png",
   "engines": {
@@ -113,12 +113,14 @@
           "enum": [
             "bedrock",
             "gemini",
-            "custom"
+            "custom",
+            "microsoft365"
           ],
           "enumDescriptions": [
             "AWS Bedrock (Claude, Titan)",
             "Google Gemini",
-            "Custom Server (Ollama, llama.cpp, internal servers)"
+            "Custom Server (Ollama, llama.cpp, internal servers)",
+            "Microsoft 365 Copilot (Enterprise)"
           ],
           "description": "LLM provider to use"
         },
@@ -205,6 +207,21 @@
             "Raw format (just send prompt)"
           ],
           "description": "Request/response format for custom server"
+        },
+        "intellipy.microsoft365.endpoint": {
+          "type": "string",
+          "default": "https://graph.microsoft.com/v1.0/me/copilot/chat",
+          "description": "Microsoft Graph API endpoint for Copilot (advanced users only)"
+        },
+        "intellipy.microsoft365.model": {
+          "type": "string",
+          "default": "gpt-4",
+          "description": "Model to request from Microsoft 365 Copilot"
+        },
+        "intellipy.microsoft365.useBuiltInChat": {
+          "type": "boolean",
+          "default": true,
+          "description": "Fall back to VS Code's built-in chat if API fails"
         }
       }
     }

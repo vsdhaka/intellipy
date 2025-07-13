@@ -2,6 +2,18 @@
 
 All notable changes to IntelliPy will be documented in this file.
 
+## [0.2.1] - 2024-01-13
+
+### Added
+- **Microsoft 365 Copilot Integration**
+  - Seamless integration with enterprise Microsoft 365 Copilot
+  - Automatic authentication using VS Code's Microsoft provider
+  - Smart fallback to built-in chat extensions
+  - No API keys required - uses existing subscription
+
+### Changed
+- Updated documentation to include Microsoft 365 setup
+
 ## [0.2.0] - 2024-01-13
 
 ### 🎉 Major Release - Privacy First & Advanced Features

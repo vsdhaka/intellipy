@@ -77,6 +77,9 @@ export class LLMService {
             case 'custom':
                 this.provider = new CustomServerProvider();
                 break;
+            case 'microsoft365':
+                this.provider = new Microsoft365Provider();
+                break;
             default:
                 throw new Error(`Unknown provider: ${providerType}`);
         }
@@ -326,5 +329,156 @@ class CustomServerProvider implements LLMProvider {
         } catch (error: any) {
             throw new Error(`Custom server error: ${error.message || error}`);
         }
+    }
+}
+
+class Microsoft365Provider implements LLMProvider {
+    async sendPrompt(prompt: string, context: string): Promise<string> {
+        try {
+            // Get Microsoft authentication
+            const session = await vscode.authentication.getSession(
+                'microsoft',
+                ['User.Read', 'offline_access'], // Basic scopes for now
+                { createIfNone: true }
+            );
+
+            if (!session) {
+                throw new Error('Failed to authenticate with Microsoft');
+            }
+
+            // Get configuration
+            const config = vscode.workspace.getConfiguration('intellipy');
+            const endpoint = config.get<string>('microsoft365.endpoint', 'https://graph.microsoft.com/v1.0/me/copilot/chat');
+            const model = config.get<string>('microsoft365.model', 'gpt-4');
+
+            // Build the request
+            const requestBody = {
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are an AI assistant helping with Python development. Here is the relevant code context:\n\n' + context
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                model: model,
+                temperature: 0.7,
+                max_tokens: 4096
+            };
+
+            // Make the API call
+            const response = await makeHttpRequest(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                // Try Microsoft 365 Chat API format
+                const chatEndpoint = 'https://graph.microsoft.com/beta/me/chats';
+                const chatResponse = await this.sendChatMessage(session.accessToken, prompt, context);
+                if (chatResponse) {
+                    return chatResponse;
+                }
+                throw new Error(`Microsoft 365 API error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            
+            // Handle different response formats
+            return data.choices?.[0]?.message?.content || 
+                   data.content || 
+                   data.response || 
+                   data.text ||
+                   'No response from Microsoft 365 Copilot';
+
+        } catch (error: any) {
+            // If Graph API fails, try using VS Code's built-in chat if available
+            if (error.message.includes('404') || error.message.includes('Not Found')) {
+                return this.fallbackToVSCodeChat(prompt, context);
+            }
+            throw new Error(`Microsoft 365 error: ${error.message || error}`);
+        }
+    }
+
+    private async sendChatMessage(accessToken: string, prompt: string, context: string): Promise<string | null> {
+        try {
+            // Alternative approach using Microsoft Teams Chat API
+            const chatEndpoint = 'https://graph.microsoft.com/v1.0/teams/sendActivityNotification';
+            
+            const requestBody = {
+                topic: {
+                    source: 'text',
+                    value: 'IntelliPy Code Assistant'
+                },
+                activityType: 'chatMessage',
+                previewText: {
+                    content: prompt
+                },
+                templateParameters: [
+                    {
+                        name: 'prompt',
+                        value: prompt
+                    },
+                    {
+                        name: 'context', 
+                        value: context.substring(0, 1000) // Limit context size
+                    }
+                ]
+            };
+
+            const response = await makeHttpRequest(chatEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                return data.value || null;
+            }
+        } catch (error) {
+            // Silently fail and try next method
+        }
+        return null;
+    }
+
+    private async fallbackToVSCodeChat(prompt: string, context: string): Promise<string> {
+        // Try to use VS Code's built-in chat functionality if available
+        try {
+            // Check if GitHub Copilot chat is available
+            const copilotExtension = vscode.extensions.getExtension('GitHub.copilot-chat');
+            if (copilotExtension && copilotExtension.isActive) {
+                // Try to send through Copilot chat command
+                await vscode.commands.executeCommand('workbench.action.chat.open');
+                
+                // Send the prompt through the chat
+                const fullPrompt = `${prompt}\n\nContext:\n${context.substring(0, 2000)}`;
+                await vscode.commands.executeCommand('workbench.action.chat.input', fullPrompt);
+                
+                return 'Request sent to Microsoft 365 Copilot. Please check the chat window for the response.';
+            }
+
+            // Try Microsoft 365 extension
+            const m365Extension = vscode.extensions.getExtension('ms-vscode.microsoft365');
+            if (m365Extension && m365Extension.isActive) {
+                await vscode.commands.executeCommand('microsoft365.chat.open');
+                return 'Request sent to Microsoft 365 Chat. Please check the chat window for the response.';
+            }
+
+        } catch (error) {
+            // Fall through to error message
+        }
+
+        throw new Error('Microsoft 365 Copilot integration requires Microsoft 365 extension or GitHub Copilot Chat to be installed and active.');
     }
 }

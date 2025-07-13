@@ -13,7 +13,7 @@ IntelliPy is designed with privacy as the top priority:
 ## Data Flow Transparency
 
 IntelliPy only communicates with:
-1. **Your configured LLM provider** (AWS Bedrock, Google Gemini, or custom server)
+1. **Your configured LLM provider** (AWS Bedrock, Google Gemini, Microsoft 365 Copilot, or custom server)
 2. **No other external services**
 
 Your code and queries are sent ONLY to the LLM provider you have explicitly configured in settings.
@@ -71,7 +71,29 @@ For users with Google Cloud accounts:
 
 Get your API key from: https://makersuite.google.com/app/apikey
 
-### 3. Local/Custom Server Setup
+### 3. Microsoft 365 Copilot Setup
+
+For enterprise users with Microsoft 365 subscriptions:
+
+```json
+{
+  "intellipy.llmProvider": "microsoft365",
+  "intellipy.microsoft365.useBuiltInChat": true
+}
+```
+
+**Authentication**:
+- Uses VS Code's built-in Microsoft authentication
+- Automatically signs in with your work/school account
+- No API keys needed - uses your Microsoft 365 subscription
+- Respects your organization's data policies
+
+**How it works**:
+1. Attempts to use Microsoft Graph API for Copilot
+2. Falls back to VS Code's built-in chat if available
+3. Seamlessly integrates with GitHub Copilot Chat or Microsoft 365 extension
+
+### 4. Local/Custom Server Setup
 
 For maximum privacy with local models:
 
