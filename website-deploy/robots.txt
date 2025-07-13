@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://intellipy.com/sitemap.xml

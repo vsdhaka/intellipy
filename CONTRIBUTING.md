@@ -6,7 +6,7 @@ Thank you for your interest in contributing to IntelliPy! We welcome contributio
 
 ### Reporting Issues
 
-- Use the [GitHub Issues](https://github.com/intellipy/intellipy-vscode/issues) page
+- Use the [GitHub Issues](https://github.com/vsdhaka/intellipy/issues) page
 - Check if the issue already exists
 - Include VS Code version, IntelliPy version, and OS
 - Provide steps to reproduce
@@ -36,8 +36,8 @@ We use conventional commits:
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/intellipy-vscode.git
-cd intellipy-vscode
+git clone https://github.com/YOUR_USERNAME/intellipy.git
+cd intellipy
 
 # Install dependencies
 npm install
