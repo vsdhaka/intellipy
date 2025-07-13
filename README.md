@@ -83,14 +83,13 @@ code --install-extension intellipy-0.2.1.vsix
 ```
 **Get API Key**: https://makersuite.google.com/app/apikey
 
-### Option 3: Microsoft 365 Copilot (Enterprise)
+### Option 3: Microsoft 365 Copilot (Enterprise - Experimental)
 ```json
 {
-  "intellipy.llmProvider": "microsoft365",
-  "intellipy.microsoft365.useBuiltInChat": true
+  "intellipy.llmProvider": "microsoft365"
 }
 ```
-**Authentication**: Uses your Microsoft work/school account automatically
+**Note**: Microsoft 365 Copilot API integration is experimental and may not be available yet. This feature requires Microsoft to enable API access for Copilot.
 
 ### Option 4: Local Models (Maximum Privacy)
 ```json

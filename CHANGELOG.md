@@ -5,14 +5,15 @@ All notable changes to IntelliPy will be documented in this file.
 ## [0.2.1] - 2024-01-13
 
 ### Added
-- **Microsoft 365 Copilot Integration**
-  - Seamless integration with enterprise Microsoft 365 Copilot
+- **Microsoft 365 Copilot Integration (Experimental)**
+  - Direct API integration with Microsoft 365 Copilot
   - Automatic authentication using VS Code's Microsoft provider
-  - Smart fallback to built-in chat extensions
-  - No API keys required - uses existing subscription
+  - Clear error messages when API is not available
+  - Prepared for future Microsoft API availability
 
 ### Changed
-- Updated documentation to include Microsoft 365 setup
+- Updated documentation to clarify Microsoft 365 integration is experimental
+- Removed fallback to built-in chat UI for cleaner implementation
 
 ## [0.2.0] - 2024-01-13
 

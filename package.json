@@ -210,18 +210,13 @@
         },
         "intellipy.microsoft365.endpoint": {
           "type": "string",
-          "default": "https://graph.microsoft.com/v1.0/me/copilot/chat",
-          "description": "Microsoft Graph API endpoint for Copilot (advanced users only)"
+          "default": "https://graph.microsoft.com/v1.0/me/copilot/chat/completions",
+          "description": "Microsoft Graph API endpoint for Copilot (experimental - API may not be available yet)"
         },
         "intellipy.microsoft365.model": {
           "type": "string",
           "default": "gpt-4",
           "description": "Model to request from Microsoft 365 Copilot"
-        },
-        "intellipy.microsoft365.useBuiltInChat": {
-          "type": "boolean",
-          "default": true,
-          "description": "Fall back to VS Code's built-in chat if API fails"
         }
       }
     }

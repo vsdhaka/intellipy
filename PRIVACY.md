@@ -71,27 +71,26 @@ For users with Google Cloud accounts:
 
 Get your API key from: https://makersuite.google.com/app/apikey
 
-### 3. Microsoft 365 Copilot Setup
+### 3. Microsoft 365 Copilot Setup (Experimental)
 
 For enterprise users with Microsoft 365 subscriptions:
 
 ```json
 {
-  "intellipy.llmProvider": "microsoft365",
-  "intellipy.microsoft365.useBuiltInChat": true
+  "intellipy.llmProvider": "microsoft365"
 }
 ```
 
-**Authentication**:
-- Uses VS Code's built-in Microsoft authentication
-- Automatically signs in with your work/school account
-- No API keys needed - uses your Microsoft 365 subscription
-- Respects your organization's data policies
+**Important Notes**:
+- This is an experimental feature as Microsoft has not yet released public APIs for Copilot
+- Authentication uses VS Code's built-in Microsoft provider
+- Requires a valid Microsoft 365 Copilot license
+- Will show clear error messages if the API is not available
 
-**How it works**:
-1. Attempts to use Microsoft Graph API for Copilot
-2. Falls back to VS Code's built-in chat if available
-3. Seamlessly integrates with GitHub Copilot Chat or Microsoft 365 extension
+**Current Status**:
+- Microsoft 365 Copilot API access is not yet publicly available
+- This integration is prepared for when Microsoft enables API access
+- Use AWS Bedrock, Google Gemini, or local models in the meantime
 
 ### 4. Local/Custom Server Setup
 
