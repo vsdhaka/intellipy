@@ -1,0 +1,202 @@
+{
+  "name": "intellipy",
+  "displayName": "IntelliPy",
+  "description": "Intelligent AI-powered coding assistant for Python development with multi-LLM support",
+  "version": "0.1.0",
+  "publisher": "intellipy-dev",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.102.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "python",
+    "ai",
+    "assistant",
+    "llm",
+    "bedrock",
+    "gemini",
+    "ollama",
+    "code",
+    "copilot",
+    "intellipy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vsdhaka/intellipy"
+  },
+  "bugs": {
+    "url": "https://github.com/vsdhaka/intellipy/issues"
+  },
+  "homepage": "https://intellipy.com",
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npm run check-types && node esbuild.js --production",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src --ext ts"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "intellipy.analyzeCode",
+        "title": "IntelliPy: Analyze Code"
+      },
+      {
+        "command": "intellipy.chat",
+        "title": "IntelliPy: Open Chat"
+      },
+      {
+        "command": "intellipy.applyChanges",
+        "title": "IntelliPy: Apply Suggested Changes"
+      },
+      {
+        "command": "intellipy.showDiff",
+        "title": "IntelliPy: Show Diff View"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "intellipy",
+          "title": "IntelliPy",
+          "icon": "$(hubot)"
+        }
+      ]
+    },
+    "views": {
+      "intellipy": [
+        {
+          "id": "intellipyChat",
+          "name": "Chat",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "IntelliPy",
+      "properties": {
+        "intellipy.llmProvider": {
+          "type": "string",
+          "default": "bedrock",
+          "enum": [
+            "bedrock",
+            "gemini",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "AWS Bedrock (Claude, Titan)",
+            "Google Gemini",
+            "Custom Server (Ollama, llama.cpp, internal servers)"
+          ],
+          "description": "LLM provider to use"
+        },
+        "intellipy.awsRegion": {
+          "type": "string",
+          "default": "us-east-1",
+          "description": "AWS region for Bedrock"
+        },
+        "intellipy.modelId": {
+          "type": "string",
+          "default": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+          "description": "Model ID to use",
+          "enum": [
+            "anthropic.claude-3-5-sonnet-20241022-v2:0",
+            "anthropic.claude-3-5-haiku-20241022-v1:0",
+            "anthropic.claude-3-opus-20240229-v1:0",
+            "anthropic.claude-3-sonnet-20240229-v1:0",
+            "anthropic.claude-3-haiku-20240307-v1:0",
+            "anthropic.claude-v2:1",
+            "anthropic.claude-instant-v1",
+            "amazon.titan-text-express-v1",
+            "amazon.titan-text-lite-v1"
+          ],
+          "enumDescriptions": [
+            "Claude 3.5 Sonnet (Latest, best for code)",
+            "Claude 3.5 Haiku (Fast, efficient)",
+            "Claude 3 Opus (Most capable)",
+            "Claude 3 Sonnet (Balanced)",
+            "Claude 3 Haiku (Fastest)",
+            "Claude 2.1 (Legacy)",
+            "Claude Instant (Legacy, fast)",
+            "Amazon Titan Express",
+            "Amazon Titan Lite"
+          ]
+        },
+        "intellipy.maxContextFiles": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum number of files to include in context"
+        },
+        "intellipy.geminiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Google Gemini API key",
+          "markdownDescription": "Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)"
+        },
+        "intellipy.geminiModel": {
+          "type": "string",
+          "default": "gemini-pro",
+          "enum": [
+            "gemini-pro",
+            "gemini-pro-vision",
+            "gemini-1.5-pro",
+            "gemini-1.5-flash"
+          ],
+          "description": "Gemini model to use"
+        },
+        "intellipy.customEndpoint": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Custom server endpoint URL. Examples:\n- Ollama: `http://localhost:11434/api/generate` or `/api/chat`\n- llama.cpp: `http://localhost:8080/v1/chat/completions`\n- vLLM: `http://localhost:8000/v1/chat/completions`"
+        },
+        "intellipy.customApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for custom server (leave empty for local servers)"
+        },
+        "intellipy.customModel": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Model name for custom server. Examples:\n- Ollama: `codellama`, `mistral`, `llama2`\n- llama.cpp: Model name or path"
+        },
+        "intellipy.customFormat": {
+          "type": "string",
+          "default": "openai",
+          "enum": [
+            "openai",
+            "ollama",
+            "raw"
+          ],
+          "enumDescriptions": [
+            "OpenAI-compatible format (llama.cpp, vLLM, most servers)",
+            "Native Ollama format",
+            "Raw format (just send prompt)"
+          ],
+          "description": "Request/response format for custom server"
+        }
+      }
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^24.0.13",
+    "@types/vscode": "^1.102.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.6",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.844.0"
+  }
+}

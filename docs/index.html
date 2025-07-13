@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliPy - Intelligent Python Coding Assistant for VS Code</title>
+    <meta name="description" content="IntelliPy is an AI-powered coding assistant for Python development. Supports AWS Bedrock, Google Gemini, and local LLMs.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: #1e1e1e;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .tagline { font-size: 1.2rem; opacity: 0.9; }
+        .hero {
+            background: white;
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .features {
+            padding: 3rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .feature {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .feature h3 {
+            color: #007ACC;
+            margin-bottom: 1rem;
+        }
+        .cta {
+            background: #007ACC;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 1rem 0.5rem;
+            transition: background 0.3s;
+        }
+        .cta:hover { background: #005a9e; }
+        .cta.secondary {
+            background: #333;
+        }
+        .cta.secondary:hover { background: #555; }
+        footer {
+            background: #1e1e1e;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        .providers {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .provider {
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="icon.png" alt="IntelliPy Logo" class="logo">
+            <h1>IntelliPy</h1>
+            <p class="tagline">Intelligent AI-Powered Python Coding Assistant for VS Code</p>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Code Smarter, Not Harder</h2>
+            <p style="font-size: 1.1rem; margin: 1rem 0;">
+                IntelliPy seamlessly integrates with your favorite LLM providers to bring intelligent code analysis, 
+                suggestions, and automated refactoring directly into your Python development workflow.
+            </p>
+            <a href="https://marketplace.visualstudio.com/items?itemName=intellipy-dev.intellipy" class="cta">Install from VS Code Marketplace</a>
+            <a href="https://github.com/intellipy/intellipy-vscode" class="cta secondary">View on GitHub</a>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 style="text-align: center; margin: 2rem 0;">Supported LLM Providers</h2>
+        <div class="providers">
+            <div class="provider">AWS Bedrock</div>
+            <div class="provider">Google Gemini</div>
+            <div class="provider">Ollama (Local)</div>
+            <div class="provider">llama.cpp</div>
+            <div class="provider">Custom Servers</div>
+        </div>
+    </section>
+
+    <section class="features container">
+        <div class="feature">
+            <h3>🤖 Multi-LLM Support</h3>
+            <p>Choose from AWS Bedrock (Claude, Titan), Google Gemini, or run completely local with Ollama and llama.cpp. 
+            Perfect for enterprise environments with strict data privacy requirements.</p>
+        </div>
+        <div class="feature">
+            <h3>🎯 Smart Context Detection</h3>
+            <p>Automatically analyzes your Python codebase, finding relevant files, imports, and tests. 
+            No manual file selection needed - IntelliPy understands your project structure.</p>
+        </div>
+        <div class="feature">
+            <h3>💡 Intelligent Suggestions</h3>
+            <p>Get AI-powered code improvements, bug fixes, and refactoring suggestions. 
+            Review changes with built-in diff view before applying them.</p>
+        </div>
+        <div class="feature">
+            <h3>🔒 Privacy First</h3>
+            <p>Run entirely offline with local models, or use your own API keys. 
+            Your code never leaves your control. Perfect for sensitive projects.</p>
+        </div>
+        <div class="feature">
+            <h3>⚡ Fast & Efficient</h3>
+            <p>Optimized context gathering ensures fast responses. 
+            Smart file limits prevent token explosion while maintaining relevant context.</p>
+        </div>
+        <div class="feature">
+            <h3>🛠️ Easy Configuration</h3>
+            <p>Simple JSON configuration for all providers. 
+            Switch between models with a single setting change. No complex setup required.</p>
+        </div>
+    </section>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Quick Start</h2>
+            <p style="margin: 1rem 0;">Configure IntelliPy in your VS Code settings:</p>
+            <pre style="background: #f0f0f0; padding: 1rem; border-radius: 5px; text-align: left; display: inline-block; margin: 1rem 0;">
+{
+  "intellipy.llmProvider": "gemini",
+  "intellipy.geminiApiKey": "your-api-key",
+  "intellipy.geminiModel": "gemini-pro"
+}</pre>
+            <p>Or use local models with Ollama:</p>
+            <pre style="background: #f0f0f0; padding: 1rem; border-radius: 5px; text-align: left; display: inline-block; margin: 1rem 0;">
+{
+  "intellipy.llmProvider": "custom",
+  "intellipy.customEndpoint": "http://localhost:11434/api/generate",
+  "intellipy.customModel": "codellama"
+}</pre>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 IntelliPy | <a href="https://github.com/intellipy/intellipy-vscode" style="color: #007ACC;">GitHub</a> | 
+            <a href="https://marketplace.visualstudio.com/items?itemName=intellipy-dev.intellipy" style="color: #007ACC;">VS Code Marketplace</a></p>
+        </div>
+    </footer>
+</body>
+</html>
