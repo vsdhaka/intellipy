@@ -1,6 +1,10 @@
 import * as vscode from 'vscode';
 import { LLMService } from './llmService';
 import { CodeAnalyzer, FileContext } from './codeAnalyzer';
+import { ChatModeManager } from './chatModeManager';
+import { MentionProvider } from './mentionProvider';
+import { ToolSystem } from './toolSystem';
+import { ChatMode } from './types';
 
 export class ChatViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'intellipyChat';
@@ -8,11 +12,15 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
     private messages: Array<{role: string, content: string}> = [];
     private lastAnalyzedFiles: FileContext[] = [];
     private pendingChanges: Map<string, string> | null = null;
+    private currentMode: ChatMode = ChatMode.Ask;
 
     constructor(
         private readonly _extensionUri: vscode.Uri,
         private readonly llmService: LLMService,
-        private readonly codeAnalyzer: CodeAnalyzer
+        private readonly codeAnalyzer: CodeAnalyzer,
+        private readonly chatModeManager: ChatModeManager,
+        private readonly mentionProvider: MentionProvider,
+        private readonly toolSystem: ToolSystem
     ) {}
 
     public resolveWebviewView(
@@ -47,6 +55,9 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                         await vscode.commands.executeCommand('intellipy.showDiff', data.filePath, data.content);
                     }
                     break;
+                case 'setMode':
+                    this.updateMode(data.mode);
+                    break;
             }
         });
     }
@@ -57,6 +68,17 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
             this._view.webview.postMessage({ 
                 type: 'addMessage', 
                 message: { role, content } 
+            });
+        }
+    }
+
+    public updateMode(mode: ChatMode) {
+        this.currentMode = mode;
+        this.chatModeManager.setMode(mode);
+        if (this._view) {
+            this._view.webview.postMessage({ 
+                type: 'modeChanged', 
+                mode: mode 
             });
         }
     }
@@ -81,28 +103,58 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
         this.addMessage('user', message);
 
         try {
-            // Get context from current file if needed
+            // Resolve mentions in the message
+            const { resolvedText, context: mentionContext } = await this.mentionProvider.resolveMentions(message);
+            
+            // Build context based on mentions and current file
             const editor = vscode.window.activeTextEditor;
-            let context = '';
+            const files = [...mentionContext.files];
             
-            if (editor && editor.document.languageId === 'python') {
-                const relevantFiles = await this.codeAnalyzer.getRelevantFiles(editor.document.uri);
-                context = await this.codeAnalyzer.consolidateCode(relevantFiles);
-            }
-
-            const response = await this.llmService.sendPrompt(message, context);
-            
-            // Check if response contains code changes
-            if (context && this.lastAnalyzedFiles.length > 0) {
-                const fileUpdates = this.codeAnalyzer.parseResponse(response, this.lastAnalyzedFiles);
-                if (fileUpdates.size > 0) {
-                    this.pendingChanges = fileUpdates;
-                    this.addMessageWithActions('assistant', response, fileUpdates);
-                    return;
+            // Add current file if not already included
+            if (editor && editor.document.languageId === 'python' && !mentionContext.includeWorkspace) {
+                const currentUri = editor.document.uri;
+                if (!files.some(uri => uri.toString() === currentUri.toString())) {
+                    files.push(currentUri);
                 }
             }
             
-            this.addMessage('assistant', response);
+            // If workspace is mentioned, get all relevant files
+            if (mentionContext.includeWorkspace && editor) {
+                const relevantFiles = await this.codeAnalyzer.getRelevantFiles(editor.document.uri);
+                this.lastAnalyzedFiles = relevantFiles;
+                relevantFiles.forEach(file => {
+                    if (!files.some(uri => uri.toString() === file.uri.toString())) {
+                        files.push(file.uri);
+                    }
+                });
+            }
+            
+            // Build context object for chat mode manager
+            const context = {
+                files: await Promise.all(files.map(async uri => ({
+                    uri,
+                    content: (await vscode.workspace.openTextDocument(uri)).getText(),
+                    relativePath: vscode.workspace.asRelativePath(uri)
+                }))),
+                symbols: mentionContext.symbols,
+                includeWorkspace: mentionContext.includeWorkspace
+            };
+            
+            // Process message through chat mode manager
+            const response = await this.chatModeManager.processMessage(resolvedText || message, context);
+            
+            // Handle response based on metadata
+            if (response.metadata?.edits && response.metadata.edits.length > 0) {
+                // Convert edits to file updates for backward compatibility
+                const fileUpdates = new Map<string, string>();
+                response.metadata.edits.forEach(edit => {
+                    fileUpdates.set(edit.uri.fsPath, edit.newContent);
+                });
+                this.pendingChanges = fileUpdates;
+                this.addMessageWithActions('assistant', response.content, fileUpdates);
+            } else {
+                this.addMessage('assistant', response.content);
+            }
         } catch (error) {
             this.addMessage('assistant', `Error: ${error}`);
         }
@@ -141,24 +193,28 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
     private _getHtmlForWebview(webview: vscode.Webview) {
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js'));
         const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css'));
-        const prismCss = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css';
-        const prismJs = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js';
-        const prismPython = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js';
+        const prismCssUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'prism-tomorrow.css'));
+        const prismJsUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'prism-bundle.js'));
 
         return `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src ${webview.cspSource} 'unsafe-inline';">
                 <link href="${styleUri}" rel="stylesheet">
-                <link rel="stylesheet" href="${prismCss}">
-                <script src="${prismJs}"></script>
-                <script src="${prismPython}"></script>
-                <title>IntelliPy</title>
+                <link href="${prismCssUri}" rel="stylesheet">
+                <script src="${prismJsUri}"></script>
+                <title>IntelliPy - Privacy First Python Assistant</title>
             </head>
             <body>
                 <div class="chat-container">
                     <div class="toolbar">
+                        <div class="mode-selector">
+                            <button class="mode-btn active" data-mode="ask" title="Ask questions about code">Ask</button>
+                            <button class="mode-btn" data-mode="edit" title="Edit code directly">Edit</button>
+                            <button class="mode-btn" data-mode="agent" title="Autonomous task execution">Agent</button>
+                        </div>
                         <button id="analyze-btn">Analyze Current File</button>
                         <div id="context-files" class="context-files"></div>
                     </div>
@@ -284,6 +340,46 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                         }
                         return '';
                     }
+
+                    // Mode selection handling
+                    const modeButtons = document.querySelectorAll('.mode-btn');
+                    let currentMode = 'ask';
+                    
+                    modeButtons.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            modeButtons.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            currentMode = btn.dataset.mode;
+                            vscode.postMessage({ type: 'setMode', mode: currentMode });
+                            updatePlaceholder();
+                        });
+                    });
+
+                    function updatePlaceholder() {
+                        switch(currentMode) {
+                            case 'ask':
+                                messageInput.placeholder = 'Ask a question about your code...';
+                                break;
+                            case 'edit':
+                                messageInput.placeholder = 'Describe the edit you want to make...';
+                                break;
+                            case 'agent':
+                                messageInput.placeholder = 'Describe the task to complete...';
+                                break;
+                        }
+                    }
+
+                    // Handle mode change from extension
+                    window.addEventListener('message', event => {
+                        const message = event.data;
+                        if (message.type === 'modeChanged') {
+                            currentMode = message.mode;
+                            modeButtons.forEach(btn => {
+                                btn.classList.toggle('active', btn.dataset.mode === currentMode);
+                            });
+                            updatePlaceholder();
+                        }
+                    });
                 </script>
             </body>
             </html>`;

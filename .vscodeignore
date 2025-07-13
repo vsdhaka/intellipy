@@ -16,3 +16,4 @@ CONTRIBUTING.md
 Assistant.png
 .git/**
 *.vsix
+website-deploy/**

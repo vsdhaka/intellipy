@@ -2,16 +2,40 @@ import * as vscode from 'vscode';
 import { CodeAnalyzer } from './codeAnalyzer';
 import { LLMService } from './llmService';
 import { ChatViewProvider } from './chatViewProvider';
+import { ChatModeManager } from './chatModeManager';
+import { InlineChatProvider } from './inlineChatProvider';
+import { MentionProvider } from './mentionProvider';
+import { ToolSystem } from './toolSystem';
+import { ChatMode } from './types';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('IntelliPy is now active!');
 
+    // Initialize core services
     const codeAnalyzer = new CodeAnalyzer();
     const llmService = new LLMService();
-    const chatProvider = new ChatViewProvider(context.extensionUri, llmService, codeAnalyzer);
+    const chatModeManager = new ChatModeManager(llmService, codeAnalyzer);
+    const mentionProvider = new MentionProvider();
+    const toolSystem = new ToolSystem();
+    const inlineChatProvider = new InlineChatProvider(chatModeManager);
+    
+    // Update chat provider to use new services
+    const chatProvider = new ChatViewProvider(
+        context.extensionUri, 
+        llmService, 
+        codeAnalyzer,
+        chatModeManager,
+        mentionProvider,
+        toolSystem
+    );
 
+    // Register providers
     context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider('intellipyChat', chatProvider)
+        vscode.window.registerWebviewViewProvider('intellipyChat', chatProvider),
+        vscode.languages.registerCodeActionsProvider(
+            { scheme: 'file', pattern: '**/*.py' },
+            inlineChatProvider
+        )
     );
 
     let analyzeCommand = vscode.commands.registerCommand('intellipy.analyzeCode', async () => {
@@ -103,7 +127,46 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(analyzeCommand, chatCommand, applyChangesCommand, showDiffCommand);
+    // New inline chat command
+    let inlineChatCommand = vscode.commands.registerCommand('intellipy.inlineChat', async (message?: string, range?: vscode.Range) => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor found');
+            return;
+        }
+        
+        await inlineChatProvider.showInlineChat(editor, message, range);
+    });
+
+    // Mode switching commands
+    let setAskModeCommand = vscode.commands.registerCommand('intellipy.setAskMode', () => {
+        chatModeManager.setMode(ChatMode.Ask);
+        chatProvider.updateMode(ChatMode.Ask);
+        vscode.window.showInformationMessage('IntelliPy: Ask mode activated');
+    });
+
+    let setEditModeCommand = vscode.commands.registerCommand('intellipy.setEditMode', () => {
+        chatModeManager.setMode(ChatMode.Edit);
+        chatProvider.updateMode(ChatMode.Edit);
+        vscode.window.showInformationMessage('IntelliPy: Edit mode activated');
+    });
+
+    let setAgentModeCommand = vscode.commands.registerCommand('intellipy.setAgentMode', () => {
+        chatModeManager.setMode(ChatMode.Agent);
+        chatProvider.updateMode(ChatMode.Agent);
+        vscode.window.showInformationMessage('IntelliPy: Agent mode activated');
+    });
+
+    context.subscriptions.push(
+        analyzeCommand, 
+        chatCommand, 
+        applyChangesCommand, 
+        showDiffCommand,
+        inlineChatCommand,
+        setAskModeCommand,
+        setEditModeCommand,
+        setAgentModeCommand
+    );
 }
 
 export function deactivate() {}

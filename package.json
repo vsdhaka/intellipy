@@ -1,8 +1,8 @@
 {
   "name": "intellipy",
-  "displayName": "IntelliPy",
-  "description": "Intelligent AI-powered coding assistant for Python development with multi-LLM support",
-  "version": "0.1.0",
+  "displayName": "IntelliPy - Privacy-First Python AI",
+  "description": "Privacy-focused AI assistant for Python. No telemetry, no tracking. Choose AWS Bedrock, Google Gemini, or run offline with local models. Your code stays private.",
+  "version": "0.2.0",
   "publisher": "intellipy-dev",
   "icon": "icon.png",
   "engines": {
@@ -17,13 +17,13 @@
     "python",
     "ai",
     "assistant",
-    "llm",
+    "privacy",
     "bedrock",
     "gemini",
     "ollama",
-    "code",
-    "copilot",
-    "intellipy"
+    "claude",
+    "offline",
+    "local"
   ],
   "repository": {
     "type": "git",
@@ -60,6 +60,30 @@
       {
         "command": "intellipy.showDiff",
         "title": "IntelliPy: Show Diff View"
+      },
+      {
+        "command": "intellipy.inlineChat",
+        "title": "IntelliPy: Inline Chat"
+      },
+      {
+        "command": "intellipy.setAskMode",
+        "title": "IntelliPy: Set Ask Mode"
+      },
+      {
+        "command": "intellipy.setEditMode",
+        "title": "IntelliPy: Set Edit Mode"
+      },
+      {
+        "command": "intellipy.setAgentMode",
+        "title": "IntelliPy: Set Agent Mode"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "intellipy.inlineChat",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "editorTextFocus"
       }
     ],
     "viewsContainers": {
@@ -185,15 +209,16 @@
       }
     }
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^24.0.13",
+    "@types/prismjs": "^1.26.5",
     "@types/vscode": "^1.102.0",
     "@vscode/vsce": "^3.6.0",
     "esbuild": "^0.25.6",
+    "prismjs": "^1.30.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {

@@ -32,6 +32,36 @@ body {
     background: var(--vscode-button-hoverBackground);
 }
 
+/* Mode selector */
+.mode-selector {
+    display: inline-flex;
+    gap: 4px;
+    margin-right: 10px;
+    background: var(--vscode-dropdown-background);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.mode-btn {
+    background: transparent !important;
+    color: var(--vscode-dropdown-foreground) !important;
+    border: none;
+    padding: 4px 12px !important;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+
+.mode-btn:hover {
+    background: var(--vscode-list-hoverBackground) !important;
+}
+
+.mode-btn.active {
+    background: var(--vscode-button-background) !important;
+    color: var(--vscode-button-foreground) !important;
+}
+
 .messages {
     flex: 1;
     overflow-y: auto;
