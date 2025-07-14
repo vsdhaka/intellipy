@@ -375,6 +375,34 @@ section {
     background: white;
 }
 
+.version-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+}
+
+.version-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.version-info {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
 .installation-steps {
     display: grid;
     gap: 2rem;

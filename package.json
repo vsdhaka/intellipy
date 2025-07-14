@@ -1,8 +1,8 @@
 {
     "name": "intellipy",
     "displayName": "IntelliPy - AI Code Assistant",
-    "description": "GitHub Copilot-like experience powered by AWS Bedrock. Privacy-first AI coding assistant for Python and all languages.",
-    "version": "1.0.0",
+    "description": "GitHub Copilot-like experience with multiple AI providers. Supports AWS Bedrock, Microsoft 365 Copilot, and custom endpoints.",
+    "version": "2.0.1",
     "publisher": "intellipy-dev",
     "icon": "icon.png",
     "engines": {
@@ -52,6 +52,10 @@
             {
                 "command": "intellipy.toggleInlineCompletions",
                 "title": "IntelliPy: Toggle Inline Completions"
+            },
+            {
+                "command": "intellipy.selectProvider",
+                "title": "IntelliPy: Select AI Provider"
             }
         ],
         "keybindings": [
@@ -69,6 +73,21 @@
         "configuration": {
             "title": "IntelliPy",
             "properties": {
+                "intellipy.llmProvider": {
+                    "type": "string",
+                    "default": "bedrock",
+                    "enum": [
+                        "bedrock",
+                        "m365copilot",
+                        "custom"
+                    ],
+                    "enumDescriptions": [
+                        "AWS Bedrock (Claude, Titan) - Privacy-first",
+                        "Microsoft 365 Copilot - Use your M365 subscription",
+                        "Custom server - Your own AI endpoint"
+                    ],
+                    "description": "LLM provider to use for AI assistance"
+                },
                 "intellipy.enableInlineCompletions": {
                     "type": "boolean",
                     "default": true,
@@ -77,12 +96,17 @@
                 "intellipy.awsRegion": {
                     "type": "string",
                     "default": "us-east-1",
-                    "description": "AWS region for Bedrock service"
+                    "description": "AWS region for Bedrock service (when using Bedrock provider)"
                 },
                 "intellipy.modelId": {
                     "type": "string",
                     "default": "anthropic.claude-3-sonnet-20240229-v1:0",
-                    "description": "Bedrock model ID to use"
+                    "description": "Bedrock model ID to use (when using Bedrock provider)"
+                },
+                "intellipy.customEndpoint": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Custom server endpoint URL (when using custom provider)"
                 }
             }
         }
@@ -98,16 +122,19 @@
         "esbuild-prod": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify"
     },
     "devDependencies": {
-        "@types/vscode": "^1.80.0",
         "@types/mocha": "^10.0.6",
         "@types/node": "18.x",
+        "@types/vscode": "^1.80.0",
         "@typescript-eslint/eslint-plugin": "^7.11.0",
         "@typescript-eslint/parser": "^7.11.0",
+        "esbuild": "^0.20.2",
         "eslint": "^8.57.0",
-        "typescript": "^5.4.5",
-        "esbuild": "^0.20.2"
+        "typescript": "^5.4.5"
     },
     "dependencies": {
-        "@aws-sdk/client-bedrock-runtime": "^3.583.0"
+        "@aws-sdk/client-bedrock-runtime": "^3.583.0",
+        "@types/node-fetch": "^2.6.12",
+        "@vscode/vsce": "^3.6.0",
+        "node-fetch": "^3.3.2"
     }
 }

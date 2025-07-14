@@ -1,152 +1,188 @@
-# IntelliPy - AI Code Assistant
+# 🤖 IntelliPy v2.0.1 - AI Code Assistant
 
 [![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=intellipy-dev.intellipy)
 [![GitHub](https://img.shields.io/github/license/vsdhaka/intellipy)](https://github.com/vsdhaka/intellipy/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/vsdhaka/intellipy)](https://github.com/vsdhaka/intellipy)
+[![Version](https://img.shields.io/badge/Version-2.0.1-brightgreen)](package.json)
 
-A privacy-first AI coding assistant for VS Code that provides GitHub Copilot-like features powered by AWS Bedrock. Get intelligent code completions, explanations, and chat assistance while maintaining complete control over your data.
+> **GitHub Copilot-like experience with multiple AI providers**
 
-🌐 **[Live Demo](https://intellipy.com)** | 📖 **[Documentation](https://github.com/vsdhaka/intellipy)** | 🐛 **[Issues](https://github.com/vsdhaka/intellipy/issues)** | 🚀 **[Cloudflare Pages](https://intellipy.pages.dev)**Py - AI Code Assistant
+IntelliPy brings AI-powered coding assistance to VS Code with support for multiple providers including AWS Bedrock, Microsoft 365 Copilot, and custom endpoints.
 
-[![VS Code Marketplace](https://img.shields.io/badge/VS%20Code-Marketplace-blue)](https://marketplace.visualstudio.com/items?itemName=intellipy.intellipy)
-[![GitHub](https://img.shields.io/github/license/vsdhaka/intellipy)](https://github.com/vsdhaka/intellipy/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/vsdhaka/intellipy)](https://github.com/vsdhaka/intellipy)
+🌐 **[Website](https://intellipy.com)** | 📖 **[Documentation](docs/)** | 🐛 **[Issues](https://github.com/vsdhaka/intellipy/issues)**
 
-A privacy-first AI coding assistant for VS Code that provides GitHub Copilot-like features powered by AWS Bedrock. Get intelligent code completions, explanations, and chat assistance while maintaining complete control over your data.
+## ✨ Features
 
-🌐 **[Live Demo](https://intellipy.com)** | 📖 **[Documentation](https://github.com/vsdhaka/intellipy)** | 🐛 **[Issues](https://github.com/vsdhaka/intellipy/issues)**
+### 🔮 **Inline Code Completions**
+- Real-time AI suggestions as you type
+- Context-aware completions for all programming languages
+- GitHub Copilot-like experience
 
-## 🔒 Privacy First
+### 💬 **Interactive Chat Interface**  
+- Dedicated chat panel for code discussions
+- Ask questions, get explanations, debug issues
+- Beautiful, responsive UI with VS Code theming
 
-**IntelliPy respects your privacy:**
-- ✅ **No telemetry or tracking** - We don't monitor your usage
-- ✅ **Your AWS account** - Your code only goes to your own AWS Bedrock
-- ✅ **Transparent operations** - All API calls are visible and auditable
-- ✅ **Open source** - Verify our privacy claims yourself
+### 🔄 **Multiple AI Providers**
+- **AWS Bedrock** (default) - Privacy-first with Claude & Titan models
+- **Microsoft 365 Copilot** - Simple browser integration  
+- **Custom Server** - Connect to your own AI endpoint
 
-## Features
+### ⚡ **Smart Code Generation**
+- Generate code from text selections
+- AI-powered code analysis and suggestions
+- Context-aware improvements and optimizations
 
-### 🚀 Inline Code Completions
-- Real-time code suggestions as you type, just like GitHub Copilot
-- Context-aware completions using AWS Bedrock's advanced AI models
-- Supports all programming languages with intelligent suggestions
+## 🚀 Quick Start
 
-### 💬 Interactive Chat Interface
-- Copilot-style chat panel for interactive coding assistance
-- Ask questions about your code and get detailed explanations
-- Request code improvements and best practices
-- Beautiful VS Code-themed interface that feels native
+### 1. Install
+Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=intellipy-dev.intellipy) or:
+```bash
+code --install-extension intellipy-dev.intellipy
+```
 
-### 🔧 Smart Code Generation
-- Select any text and get AI-powered code explanations or improvements
-- Context-aware code refactoring suggestions
-- Intelligent code analysis and optimization recommendations
+### 2. Select Provider
+`Ctrl+Shift+P` → "IntelliPy: Select AI Provider"
 
-### 🎯 Python-Focused Features
-- Optimized prompts for Python development
-- Understanding of Python best practices and conventions
-- Support for modern Python frameworks and libraries
+### 3. Start Coding!
+Begin typing and get AI-powered suggestions, or open the chat panel with `Ctrl+Shift+I`.
 
-## Installation
+## 🔧 Provider Setup
 
-1. Install the extension from the generated `.vsix` file:
-   ```bash
-   code --install-extension intellipy-1.0.0.vsix
-   ```
+### 🔶 AWS Bedrock (Recommended)
+```bash
+# Install AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip && sudo ./aws/install
 
-   Or install from the VS Code Marketplace (coming soon).
+# Configure credentials
+aws configure
 
-2. Configure your AWS credentials (choose one method):
+# Ensure Bedrock access in your region
+```
 
-   **Option 1: AWS CLI**
-   ```bash
-   aws configure
-   ```
+### 🔷 Microsoft 365 Copilot
+- Requires M365 Business license with Copilot access
+- No configuration needed - opens in browser
+- Click to test access directly
 
-   **Option 2: Environment Variables**
-   ```bash
-   export AWS_ACCESS_KEY_ID=your_access_key
-   export AWS_SECRET_ACCESS_KEY=your_secret_key
-   export AWS_REGION=us-east-1
-   ```
+### ⚙️ Custom Server
+- Configure your endpoint URL in settings
+- REST API with JSON request/response format:
+```json
+// Request
+{
+  "message": "user query",
+  "context": "additional context"
+}
 
-   **Option 3: AWS Profile**
-   ```bash
-   export AWS_PROFILE=your_profile_name
-   ```
+// Response  
+{
+  "response": "AI response text"
+}
+```
 
-3. Restart VS Code after configuring credentials.
+## 🎯 Commands & Shortcuts
 
-## Usage
+| Command | Shortcut | Description |
+|---------|----------|-------------|
+| `IntelliPy: Generate Code` | `Ctrl+Shift+B` | Generate code from selection |
+| `IntelliPy: Open Chat` | `Ctrl+Shift+I` | Open AI chat interface |
+| `IntelliPy: Select Provider` | - | Switch between AI providers |
+| `IntelliPy: Toggle Completions` | - | Enable/disable inline completions |
 
-### Inline Completions
-- Start typing code in any file
-- The extension will automatically suggest completions
-- Press `Tab` to accept suggestions
-- Press `Escape` to dismiss suggestions
+## 🏗️ Architecture v2.0
 
-### Chat Interface
-- Use `Ctrl+Shift+I` (or `Cmd+Shift+I` on Mac) to open the chat panel
-- Type your questions about code
-- Get AI-powered responses and suggestions
+Clean, modular architecture for maintainability:
 
-### Code Generation
-- Select text in any file
-- Use `Ctrl+Shift+B` (or `Cmd+Shift+B` on Mac) to generate code
-- The AI will analyze and provide improvements or explanations
+```
+src/
+├── extension.ts              # Main entry point (43 lines)
+├── providers/               # AI provider implementations
+│   ├── base.ts             # Provider interface
+│   ├── bedrockProvider.ts  # AWS Bedrock integration
+│   ├── m365Provider.ts     # M365 Copilot (browser-based)
+│   ├── customProvider.ts   # Custom endpoint support
+│   └── providerFactory.ts  # Provider management
+└── features/               # Core features
+    ├── chat.ts            # Chat webview interface
+    ├── commands.ts        # Command handlers
+    └── inlineCompletion.ts # Inline completion provider
+```
 
-### Toggle Features
-- Use the Command Palette (`Ctrl+Shift+P`) and search for "IntelliPy"
-- Toggle inline completions on/off
-- Access all IntelliPy commands
+## 🔒 Privacy & Security
 
-## Configuration
+### AWS Bedrock (Default)
+- ✅ **Privacy-first** - Your code goes only to your AWS account
+- ✅ **No data retention** - AWS Bedrock doesn't store your data
+- ✅ **Enterprise-grade** - SOC 2, ISO 27001, HIPAA compliant
+- ✅ **Transparent** - All API calls are auditable
 
-Open VS Code settings and configure:
+### Microsoft 365 Copilot
+- ✅ **Browser-based** - Uses your existing M365 session
+- ✅ **No local storage** - Queries processed in M365 environment
+- ✅ **Enterprise compliance** - Inherits your M365 security policies
 
-- `intellipy.enableInlineCompletions`: Enable/disable inline completions
-- `intellipy.awsRegion`: AWS region for Bedrock service (default: us-east-1)
-- `intellipy.modelId`: Bedrock model to use (default: Claude 3 Sonnet)
+### Custom Server
+- ⚠️ **Your responsibility** - Security depends on your endpoint
+- ✅ **Full control** - You manage the entire data flow
 
-## Supported Models
+## 🛠️ Development
 
-- `anthropic.claude-3-sonnet-20240229-v1:0` (default)
-- `anthropic.claude-3-haiku-20240307-v1:0`
-- Other Claude 3 models available in your AWS region
+### Project Structure
+```bash
+# Install dependencies
+npm install
 
-## Requirements
+# Build for development
+npm run esbuild
 
-- VS Code 1.80.0 or higher
-- AWS account with Bedrock access
-- AWS credentials configured
-- Internet connection for API calls
+# Build for production
+npm run esbuild-prod
 
-## Troubleshooting
+# Package extension
+npx vsce package
+```
 
-### Common Issues
+### Key Files
+- `package.json` - Extension manifest and dependencies
+- `src/extension.ts` - Main activation point
+- `src/providers/` - AI provider implementations
+- `src/features/` - Feature modules
+- `docs/development/` - Development documentation
 
-1. **"Access Denied" errors**: Ensure your AWS credentials have `bedrock:InvokeModel` permissions
-2. **Model not available**: Check if the model is available in your AWS region
-3. **No completions**: Verify AWS credentials are configured correctly
+## 📝 Configuration
 
-### Debug Steps
+Configure IntelliPy through VS Code settings:
 
-1. Check AWS credentials: `aws sts get-caller-identity`
-2. Verify Bedrock access in AWS Console
-3. Check VS Code Developer Console for error messages
+```json
+{
+  "intellipy.llmProvider": "bedrock",           // Provider: bedrock|m365copilot|custom
+  "intellipy.enableInlineCompletions": true,   // Enable inline suggestions
+  "intellipy.awsRegion": "us-east-1",         // AWS region for Bedrock
+  "intellipy.modelId": "anthropic.claude-3-sonnet-20240229-v1:0", // Bedrock model
+  "intellipy.customEndpoint": ""               // Custom server URL
+}
+```
 
-## License
-
-This project is licensed under the MIT License.
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
-## Support
+## 📄 License
 
-For issues and feature requests, please create an issue in the repository.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- AWS Bedrock team for the powerful AI models
+- Microsoft for M365 Copilot integration possibilities  
+- VS Code team for the excellent extension API
+- Open source community for inspiration and feedback
+
+---
+
+**Made with ❤️ by [vsdhaka](https://github.com/vsdhaka)**
