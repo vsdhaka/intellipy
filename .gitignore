@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+*.log
+npm-debug.log*
+
+# Build outputs
+out/
+dist/
+
+# VS Code extension files
+*.vsix
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Package lock files (keep package.json but ignore lock for flexibility)
+package-lock.json
+
+# AWS credentials (never commit these!)
+.aws/
+aws-credentials.json

@@ -1,0 +1,7 @@
+# Cloudflare Pages Build Configuration
+publish = "docs"
+command = "echo 'Static site ready'"
+
+# Environment variables (if needed)
+[build.environment]
+  NODE_VERSION = "18"

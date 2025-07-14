@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelliPy - AI Code Assistant for VS Code</title>
+    <meta name="description" content="Privacy-first AI coding assistant for VS Code. Get GitHub Copilot-like features powered by AWS Bedrock.">
+    <meta name="keywords" content="AI, VS Code, extension, code assistant, AWS Bedrock, privacy-first, Python">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://intellipy.com/">
+    <meta property="og:title" content="IntelliPy - AI Code Assistant for VS Code">
+    <meta property="og:description" content="Privacy-first AI coding assistant for VS Code. Get GitHub Copilot-like features powered by AWS Bedrock.">
+    <meta property="og:image" content="https://intellipy.com/assets/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://intellipy.com/">
+    <meta property="twitter:title" content="IntelliPy - AI Code Assistant for VS Code">
+    <meta property="twitter:description" content="Privacy-first AI coding assistant for VS Code. Get GitHub Copilot-like features powered by AWS Bedrock.">
+    <meta property="twitter:image" content="https://intellipy.com/assets/og-image.png">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <img src="assets/logo.svg" alt="IntelliPy Logo" class="logo">
+                <span class="brand-name">IntelliPy</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="#installation" class="nav-link">Get Started</a>
+                <a href="https://github.com/vsdhaka/intellipy" class="nav-link" target="_blank">GitHub</a>
+                <a href="#installation" class="btn btn-primary">Install Now</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">Privacy-First</span><br>
+                        AI Code Assistant
+                    </h1>
+                    <p class="hero-description">
+                        Get GitHub Copilot-like features in VS Code while maintaining complete control over your data. 
+                        Powered by AWS Bedrock with zero telemetry.
+                    </p>
+                    <div class="hero-badges">
+                        <span class="badge">🔒 Privacy First</span>
+                        <span class="badge">🚀 Real-time Completions</span>
+                        <span class="badge">💬 Interactive Chat</span>
+                        <span class="badge">🐍 Python Optimized</span>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#installation" class="btn btn-primary btn-large">
+                            <span class="btn-icon">⬇️</span>
+                            Install Extension
+                        </a>
+                        <a href="#demo" class="btn btn-secondary btn-large">
+                            <span class="btn-icon">🎥</span>
+                            Watch Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="code-editor-mockup">
+                        <div class="editor-header">
+                            <div class="editor-tabs">
+                                <div class="tab active">main.py</div>
+                                <div class="tab">utils.js</div>
+                            </div>
+                        </div>
+                        <div class="editor-content">
+                            <div class="line-numbers">
+                                <span>1</span>
+                                <span>2</span>
+                                <span>3</span>
+                                <span>4</span>
+                                <span>5</span>
+                                <span>6</span>
+                            </div>
+                            <div class="code">
+                                <div class="code-line">
+                                    <span class="keyword">def</span> 
+                                    <span class="function">fibonacci</span><span class="punctuation">(</span><span class="parameter">n</span><span class="punctuation">):</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="indent">    </span><span class="comment"># IntelliPy suggests:</span>
+                                </div>
+                                <div class="code-line suggestion">
+                                    <span class="indent">    </span><span class="suggested-code">if n <= 1: return n</span>
+                                </div>
+                                <div class="code-line suggestion">
+                                    <span class="indent">    </span><span class="suggested-code">return fibonacci(n-1) + fibonacci(n-2)</span>
+                                </div>
+                                <div class="code-line">
+                                    <span class="cursor"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose IntelliPy?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Privacy First</h3>
+                        <p>Your code stays with your AWS account. No telemetry, no tracking, no data collection.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Real-time Completions</h3>
+                        <p>Get intelligent code suggestions as you type, powered by Claude 3.5 Sonnet and other advanced models.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>Interactive Chat</h3>
+                        <p>Ask questions about your code, get explanations, and receive optimization suggestions in a beautiful chat interface.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Context Aware</h3>
+                        <p>Understands your project structure and provides relevant suggestions based on your codebase.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🐍</div>
+                        <h3>Python Optimized</h3>
+                        <p>Special focus on Python development with understanding of frameworks, best practices, and conventions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Highly Configurable</h3>
+                        <p>Choose your AWS region, model, and customize the experience to fit your workflow.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Section -->
+        <section id="demo" class="demo">
+            <div class="container">
+                <h2 class="section-title">See IntelliPy in Action</h2>
+                <div class="demo-content">
+                    <div class="demo-video">
+                        <div class="video-placeholder">
+                            <div class="play-button">▶️</div>
+                            <p>Demo Video Coming Soon</p>
+                        </div>
+                    </div>
+                    <div class="demo-features">
+                        <h3>What you'll see:</h3>
+                        <ul>
+                            <li>✨ Instant code completions as you type</li>
+                            <li>💡 Smart suggestions for Python functions</li>
+                            <li>🔍 Interactive chat for code explanations</li>
+                            <li>🛠️ Context-aware refactoring suggestions</li>
+                            <li>⚡ Lightning-fast responses from AWS Bedrock</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Section -->
+        <section id="installation" class="installation">
+            <div class="container">
+                <h2 class="section-title">Get Started in Minutes</h2>
+                <div class="installation-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Install the Extension</h3>
+                            <p>Download from VS Code Marketplace or install manually:</p>
+                            <div class="code-block">
+                                <code>code --install-extension intellipy-1.0.0.vsix</code>
+                                <button class="copy-btn" onclick="copyToClipboard('code --install-extension intellipy-1.0.0.vsix')">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Configure AWS Credentials</h3>
+                            <p>Set up your AWS credentials for Bedrock access:</p>
+                            <div class="code-block">
+                                <code>aws configure</code>
+                                <button class="copy-btn" onclick="copyToClipboard('aws configure')">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Start Coding!</h3>
+                            <p>Open any file and start typing. IntelliPy will provide intelligent suggestions automatically.</p>
+                            <div class="shortcuts">
+                                <span class="shortcut"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd> Open Chat</span>
+                                <span class="shortcut"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> Generate Code</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Supercharge Your Coding?</h2>
+                    <p>Join developers who've already enhanced their productivity with IntelliPy</p>
+                    <div class="cta-buttons">
+                        <a href="https://github.com/vsdhaka/intellipy/releases" class="btn btn-primary btn-large" target="_blank">
+                            Download Latest Release
+                        </a>
+                        <a href="https://github.com/vsdhaka/intellipy" class="btn btn-secondary btn-large" target="_blank">
+                            View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="assets/logo.svg" alt="IntelliPy Logo" class="logo">
+                    <span class="brand-name">IntelliPy</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/vsdhaka/intellipy" target="_blank">GitHub</a>
+                    <a href="https://github.com/vsdhaka/intellipy/issues" target="_blank">Issues</a>
+                    <a href="https://github.com/vsdhaka/intellipy/blob/main/LICENSE" target="_blank">License</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IntelliPy. Open source MIT license.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

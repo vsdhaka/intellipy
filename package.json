@@ -1,0 +1,113 @@
+{
+    "name": "intellipy",
+    "displayName": "IntelliPy - AI Code Assistant",
+    "description": "GitHub Copilot-like experience powered by AWS Bedrock. Privacy-first AI coding assistant for Python and all languages.",
+    "version": "1.0.0",
+    "publisher": "intellipy-dev",
+    "icon": "icon.png",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "AI",
+        "Machine Learning",
+        "Other"
+    ],
+    "keywords": [
+        "ai",
+        "python",
+        "copilot",
+        "bedrock",
+        "code-generation",
+        "autocomplete",
+        "intellipy",
+        "privacy-first"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/vsdhaka/intellipy.git"
+    },
+    "homepage": "https://intellipy.com",
+    "bugs": {
+        "url": "https://github.com/vsdhaka/intellipy/issues"
+    },
+    "author": {
+        "name": "vsdhaka"
+    },
+    "license": "MIT",
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "intellipy.generateCode",
+                "title": "IntelliPy: Generate Code from Selection"
+            },
+            {
+                "command": "intellipy.openChat",
+                "title": "IntelliPy: Open Chat"
+            },
+            {
+                "command": "intellipy.toggleInlineCompletions",
+                "title": "IntelliPy: Toggle Inline Completions"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "intellipy.generateCode",
+                "key": "ctrl+shift+b",
+                "mac": "cmd+shift+b"
+            },
+            {
+                "command": "intellipy.openChat",
+                "key": "ctrl+shift+i",
+                "mac": "cmd+shift+i"
+            }
+        ],
+        "configuration": {
+            "title": "IntelliPy",
+            "properties": {
+                "intellipy.enableInlineCompletions": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable inline code completions"
+                },
+                "intellipy.awsRegion": {
+                    "type": "string",
+                    "default": "us-east-1",
+                    "description": "AWS region for Bedrock service"
+                },
+                "intellipy.modelId": {
+                    "type": "string",
+                    "default": "anthropic.claude-3-sonnet-20240229-v1:0",
+                    "description": "Bedrock model ID to use"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run esbuild-prod",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTests.js",
+        "esbuild": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+        "esbuild-prod": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.80.0",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "18.x",
+        "@typescript-eslint/eslint-plugin": "^7.11.0",
+        "@typescript-eslint/parser": "^7.11.0",
+        "eslint": "^8.57.0",
+        "typescript": "^5.4.5",
+        "esbuild": "^0.20.2"
+    },
+    "dependencies": {
+        "@aws-sdk/client-bedrock-runtime": "^3.583.0"
+    }
+}
